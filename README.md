@@ -73,65 +73,66 @@ The system is built using the **MERN stack** and follows a clean, maintainable a
 ```bash
 Home-Renovation-Management-System/
 │
-├── backend/                     # Node.js + Express Backend
+├── backend/                    
 │   ├── config/
-│   │   └── db.js
+│   │   └── db.js             
 │   │
-│   ├── middleware/
+│   ├── controllers/           
+│   │   ├── authController.js
+│   │   └── projectController.js
 │   │
-│   ├── models/
+│   ├── models/                
 │   │   ├── User.js
-│   │   ├── Project.js
-│   │   ├── Task.js
-│   │   ├── Material.js
-│   │   └── Expense.js
+│   │   └── Project.js
 │   │
-│   ├── routes/
-│   │   ├── auth.js
-│   │   ├── projects.js
-│   │   ├── tasks.js
-│   │   └── users.js
+│   ├── routes/             
+│   │   ├── authRoutes.js
+│   │   └── projectRoutes.js
 │   │
-│   ├── .env
-│   ├── server.js
-│   └── package.json
+│   ├── middleware/            
+│   │   └── authMiddleware.js
+│   │
+│   ├── server.js            
+│   ├── package.json
+│   └── .env                  
 │
-├── frontend/                   # React Frontend (Vite)
+├── frontend/                 
 │   ├── public/
+│   │
 │   ├── src/
 │   │   ├── api/
-│   │   │   └── axios.js
-│   │   │
-│   │   ├── assets/
+│   │   │   └── axios.js      
 │   │   │
 │   │   ├── components/
 │   │   │   ├── Navbar.jsx
-│   │   │   ├── Sidebar.jsx
-│   │   │   └── Layout.jsx
+│   │   │   └── ProtectedRoute.jsx
 │   │   │
 │   │   ├── pages/
-│   │   │   ├── Dashboard.jsx
 │   │   │   ├── Login.jsx
-│   │   │   ├── Signup.jsx
-│   │   │   └── ProjectPage.jsx
+│   │   │   ├── Register.jsx
+│   │   │   ├── Dashboard.jsx
+│   │   │   └── Home.jsx
 │   │   │
-│   │   ├── context/
-│   │   │   └── AuthContext.jsx
+│   │   ├── styles/
+│   │   │   ├── Login.css
+│   │   │   └── Dashboard.css
 │   │   │
 │   │   ├── App.jsx
 │   │   ├── main.jsx
 │   │   └── index.css
 │   │
-│   ├── .env
+│   ├── index.html
 │   ├── package.json
 │   └── vite.config.js
 │
+├── screenshots/             
+│   ├── login.png
+│   └── dashboard.png
+│
+├── README.md                  
 ├── .gitignore
-├── README.md
-└── package.json
+└── package.json (optional root)
 ```
-
----
 
 ## ⚙️ Getting Started
 
@@ -179,9 +180,10 @@ PORT=5000
 ## 📸 Screenshots
 
 ### Login
-![Login](./screenshots/login.png)
+![Login](screenshots/login.png)
 
-![Dashboard](./screenshots/dashboard.png)
+### Dashboard
+![Dashboard](screenshots/dashboard.png)
 ---
 
 ## 🚀 Future Enhancements
