@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import "./Login.css";
+import "./login.css";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
-const Login = () => {
+const login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -13,7 +13,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { Login } = useAuth();
 
   // handle input change
   const handleChange = (e) => {
