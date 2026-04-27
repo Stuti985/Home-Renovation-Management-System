@@ -13,7 +13,7 @@ const login = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const { Login } = useAuth();
+  const { login } = useAuth();
 
   // handle input change
   const handleChange = (e) => {
@@ -97,4 +97,4 @@ const login = () => {
   );
 };
 
-export default Login;
+export default login;
