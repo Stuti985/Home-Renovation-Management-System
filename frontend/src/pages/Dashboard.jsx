@@ -44,14 +44,15 @@ export default function Dashboard() {
       await API.delete(`/projects/${id}`);
       setProjects(projects.filter((p) => p._id !== id));
     } catch (err) {
-      alert("Delete failed");
+      console.error(err);  
+    alert(err.response?.data?.message || "Delete failed");
     }
   };
 
   return (
     <div className="dashboard">
-      
-      {/* HEADER */}
+      <div className="container">
+
       <div className="dashboard-header">
         <h1>🏠 My Renovation Projects</h1>
         <button className="logout-btn" onClick={() => {
@@ -93,6 +94,8 @@ export default function Dashboard() {
             </div>
           ))
         )}
+      </div>
+
       </div>
     </div>
   );
