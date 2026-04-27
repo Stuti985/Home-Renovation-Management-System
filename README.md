@@ -16,8 +16,8 @@
 
 ## 🌐 Live Demo
 
-🚀 **Frontend:** https://your-frontend-link.vercel.app
-⚙️ **Backend API:** https://your-backend-link.onrender.com
+🚀 **Frontend:** https://home-renovation-management-system-4.vercel.app  
+⚙️ **Backend API:** https://home-renovation-management-system.onrender.com
 
 ---
 
