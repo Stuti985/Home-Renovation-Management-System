@@ -1,97 +1,101 @@
-import React, { useState } from "react";
-import "./signup.css";
-import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import Button from '../components/ui/Button';
+import toast from 'react-hot-toast';
+import { User, Mail, Lock, UserPlus } from 'lucide-react';
+import './auth.css';
 
 export default function Signup() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { register } = useAuth();
   const navigate = useNavigate();
-  const { signup } = useAuth();
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setError("");
-      setLoading(true);
-
-      await signup(formData.name, formData.email, formData.password);
-
-      navigate("/");
+      await register(name, email, password);
+      toast.success('Registration successful! Please check your email to verify your account.');
+      navigate('/login');
     } catch (err) {
-      setError(err.response?.data?.msg || "Signup failed");
-    } finally {
-      setLoading(false);
+      toast.error(err.response?.data?.message || 'Registration failed');
     }
   };
 
   return (
-    <div className="signup-page">
-      <div className="signup-card">
-        <h2>Create Account ✨</h2>
-        <p>Join and manage your renovation projects</p>
-
-        {error && <p className="error-msg">{error}</p>}
-
-        <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <label>Name</label>
-            <input
-              type="text"
-              name="name"
-              placeholder="Enter your name"
-              onChange={handleChange}
-              required
-            />
+    <div className="auth-container fade-in">
+      <div className="auth-content">
+        <div className="auth-form-wrapper">
+          <Link to="/" className="auth-logo">Renovate<span className="gradient-text">Pro</span></Link>
+          
+          <div className="auth-header">
+            <h2>Create an Account</h2>
+            <p>Start tracking your renovation projects today.</p>
           </div>
 
-          <div className="input-group">
-            <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              onChange={handleChange}
-              required
-            />
-          </div>
+          <form onSubmit={handleSubmit} className="auth-form">
+            <div className="input-group">
+              <label>Full Name</label>
+              <div className="input-wrapper">
+                <User size={18} className="input-icon" />
+                <input
+                  type="text"
+                  placeholder="John Doe"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
 
-          <div className="input-group">
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="Enter your password"
-              onChange={handleChange}
-              required
-            />
-          </div>
+            <div className="input-group">
+              <label>Email Address</label>
+              <div className="input-wrapper">
+                <Mail size={18} className="input-icon" />
+                <input
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
 
-          <button
-            type="submit"
-            className="btn-signup"
-            disabled={loading}
-          >
-            {loading ? "Creating..." : "Sign Up"}
-          </button>
-        </form>
+            <div className="input-group">
+              <label>Password</label>
+              <div className="input-wrapper">
+                <Lock size={18} className="input-icon" />
+                <input
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  minLength={6}
+                />
+              </div>
+              <span className="input-hint">Must be at least 6 characters.</span>
+            </div>
 
-        <div className="login-link">
-          Already have an account?{" "}
-          <Link to="/login">
-            <span>Login</span>
-          </Link>
+            <Button type="submit" fullWidth className="auth-submit-btn">
+              <UserPlus size={20} /> Create Account
+            </Button>
+
+            <div className="auth-footer">
+              Already have an account? <Link to="/login">Sign in</Link>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div className="auth-image-panel">
+        <img src="/hero-renovation.png" alt="Renovation" className="auth-bg" />
+        <div className="auth-overlay"></div>
+        <div className="auth-testimonial">
+          <p>"The budget tracking feature alone saved me thousands on my kitchen remodel."</p>
+          <span>- Michael Chen, Homeowner</span>
         </div>
       </div>
     </div>

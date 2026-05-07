@@ -1,100 +1,93 @@
-import React, { useState } from "react";
-import "./login.css";
-import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import React, { useState } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import Button from '../components/ui/Button';
+import toast from 'react-hot-toast';
+import { Mail, Lock, LogIn } from 'lucide-react';
+import './auth.css';
 
-const login = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: ""
-  });
-
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const navigate = useNavigate();
+export default function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  // handle input change
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  // handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      setError("");
-      setLoading(true);
-
-      await login(formData.email, formData.password);
-
-      navigate("/"); // go to dashboard
+      await login(email, password);
+      toast.success('Welcome back!');
+      const origin = location.state?.from?.pathname || '/dashboard';
+      navigate(origin);
     } catch (err) {
-      console.error(err);
-      setError(err.response?.data?.msg || "Login failed. Please try again.");
-    } finally {
-      setLoading(false);
+      toast.error(err.response?.data?.message || 'Login failed');
     }
   };
 
   return (
-    <div className="login-page">
-      <div className="login-card">
-        <h2>Welcome Back 👋</h2>
-        <p>Sign in to continue managing your renovation projects</p>
-
-        {/* ✅ ERROR MESSAGE */}
-        {error && <p className="error-msg">{error}</p>}
-
-        <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
+    <div className="auth-container fade-in">
+      <div className="auth-content">
+        <div className="auth-form-wrapper">
+          <Link to="/" className="auth-logo">Renovate<span className="gradient-text">Pro</span></Link>
+          
+          <div className="auth-header">
+            <h2>Welcome Back</h2>
+            <p>Enter your details to access your dashboard.</p>
           </div>
 
-          <div className="input-group">
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="Enter your password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
+          <form onSubmit={handleSubmit} className="auth-form">
+            <div className="input-group">
+              <label>Email Address</label>
+              <div className="input-wrapper">
+                <Mail size={18} className="input-icon" />
+                <input
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
 
-          {/* ✅ BUTTON WITH LOADING */}
-          <button
-            type="submit"
-            className="btn-login"
-            disabled={loading}
-          >
-            {loading ? "Logging in..." : "Login"}
-          </button>
-        </form>
+            <div className="input-group">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <label>Password</label>
+                <Link to="/forgot-password" style={{ fontSize: '0.875rem', color: 'var(--accent-primary)', fontWeight: 500 }}>
+                  Forgot Password?
+                </Link>
+              </div>
+              <div className="input-wrapper">
+                <Lock size={18} className="input-icon" />
+                <input
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
 
-        <div className="signup-link">
-          Don’t have an account?{" "}
-          <Link to="/signup">
-            <span>Sign up</span>
-          </Link>
+            <Button type="submit" fullWidth className="auth-submit-btn">
+              <LogIn size={20} /> Sign In
+            </Button>
+
+            <div className="auth-footer">
+              Don't have an account? <Link to="/signup">Sign up</Link>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div className="auth-image-panel">
+        <img src="/hero-renovation.png" alt="Renovation" className="auth-bg" />
+        <div className="auth-overlay"></div>
+        <div className="auth-testimonial">
+          <p>"RenovatePro completely transformed how I manage my investment properties. Absolutely essential tool."</p>
+          <span>- Sarah Jenkins, Property Investor</span>
         </div>
       </div>
     </div>
   );
-};
-
-export default login;
+}

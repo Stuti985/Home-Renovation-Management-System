@@ -1,220 +1,176 @@
-# 🏠 Home Renovation Management System
+# 🏡 RenovatePro - Home Renovation Management SaaS
 
 <p align="center">
-  A full-stack web application to manage and streamline home renovation projects, services, and resources efficiently.
+  <img src="frontend/public/hero-renovation.png" alt="RenovatePro Cover Image" width="800"/>
 </p>
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Frontend-React-blue?style=for-the-badge&logo=react" />
-  <img src="https://img.shields.io/badge/Backend-Node.js-green?style=for-the-badge&logo=node.js" />
-  <img src="https://img.shields.io/badge/Database-MongoDB-brightgreen?style=for-the-badge&logo=mongodb" />
-  <img src="https://img.shields.io/badge/Auth-JWT-orange?style=for-the-badge&logo=jsonwebtokens" />
-  <img src="https://img.shields.io/badge/Status-Production--Ready-success?style=for-the-badge" />
-</p>
+> A modern, premium, production-level MERN stack application designed to seamlessly manage home renovation projects, track budgets, and connect homeowners with top-rated local contractors.
 
 ---
 
-## 🌐 Live Demo
+## ✨ Features
 
-🚀 **Frontend:** https://home-renovation-management-system-4.vercel.app  
-⚙️ **Backend API:** https://home-renovation-management-system.onrender.com
-
----
-
-## ✨ Overview
-
-The **Home Renovation Management System** is a scalable and modular web platform designed to simplify the process of managing home renovation projects.
-
-It enables users to:
-
-* Manage renovation projects
-* Track tasks and expenses
-* Organize materials
-* Monitor overall project progress
-
-The system is built using the **MERN stack** and follows a clean, maintainable architecture.
-
----
-
-## 🎯 Key Features
-
-### 👤 User Features
-
-* 🔐 Secure Authentication (Login / Signup using JWT)
-* 🏗️ Create and manage renovation projects
-* 📋 Add and track tasks
-* 🧱 Manage materials used in projects
-* 💰 Track expenses
-* 📊 Dashboard overview
-
-### 🛠️ System Features
-
-* RESTful API architecture
-* Modular backend (routes, models, middleware)
-* Context-based state management (React)
-* Clean and responsive UI
-
----
-
-## 🧰 Tech Stack
-
-| Layer          | Technology                            |
-| -------------- | ------------------------------------- |
-| Frontend       | React.js, Vite, HTML, CSS, JavaScript |
-| Backend        | Node.js, Express.js                   |
-| Database       | MongoDB (Mongoose)                    |
-| Authentication | JWT, Bcrypt                           |
-| Deployment     | Vercel, Render                        |
-
----
-
-## 📂 Project Structure
-
-```bash
-Home-Renovation-Management-System/
-│
-├── backend/                    
-│   ├── config/
-│   │   └── db.js             
-│   │
-│   ├── controllers/           
-│   │   ├── authController.js
-│   │   └── projectController.js
-│   │
-│   ├── models/                
-│   │   ├── User.js
-│   │   └── Project.js
-│   │
-│   ├── routes/             
-│   │   ├── authRoutes.js
-│   │   └── projectRoutes.js
-│   │
-│   ├── middleware/            
-│   │   └── authMiddleware.js
-│   │
-│   ├── server.js            
-│   ├── package.json
-│   └── .env                  
-│
-├── frontend/                 
-│   ├── public/
-│   │
-│   ├── src/
-│   │   ├── api/
-│   │   │   └── axios.js      
-│   │   │
-│   │   ├── components/
-│   │   │   ├── Navbar.jsx
-│   │   │   └── ProtectedRoute.jsx
-│   │   │
-│   │   ├── pages/
-│   │   │   ├── Login.jsx
-│   │   │   ├── Register.jsx
-│   │   │   ├── Dashboard.jsx
-│   │   │   └── Home.jsx
-│   │   │
-│   │   ├── styles/
-│   │   │   ├── Login.css
-│   │   │   └── Dashboard.css
-│   │   │
-│   │   ├── App.jsx
-│   │   ├── main.jsx
-│   │   └── index.css
-│   │
-│   ├── index.html
-│   ├── package.json
-│   └── vite.config.js
-│
-├── screenshots/             
-│   ├── login.png
-│   └── dashboard.png
-│
-├── README.md                  
-├── .gitignore
-└── package.json (optional root)
-```
-
-## ⚙️ Getting Started
-
-### 🔹 Clone the Repository
-
-```bash
-git clone https://github.com/Stuti985/Home-Renovation-Management-System.git
-cd Home-Renovation-Management-System
-```
-
----
-
-### 🔹 Backend Setup
-
-```bash
-cd backend
-npm install
-npm run dev
-```
-
----
-
-### 🔹 Frontend Setup
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
----
-
-## 🔐 Environment Variables
-
-Create a `.env` file inside the `backend/` folder:
-
-```env
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_secret_key
-PORT=5000
-```
+- **Modern Glassmorphism UI**: A highly responsive, animated, and premium frontend built with React, Vite, and Framer Motion.
+- **Robust Authentication**: Secure JWT-based authentication featuring role-based access control (Admin vs. User), bcrypt password hashing, and complete email verification & password reset workflows.
+- **Contractor Directory**: A searchable, filterable directory of professional contractors complete with public profiles and ratings.
+- **Project Tracking**: Manage renovation tasks, expenses, and materials via Mongoose Virtual relationships (Parent Referencing).
+- **Cloudinary Integration**: Secure drag-and-drop image uploads for Before/After galleries and user avatars.
+- **Performance & Security**: Built with `helmet`, `xss-clean`, `express-rate-limit`, `express-mongo-sanitize`, and `apicache` for enterprise-grade security and lightning-fast speeds.
+- **SEO Optimized**: Dynamic meta tags powered by `react-helmet-async` and code-splitting via `React.lazy`.
 
 ---
 
 ## 📸 Screenshots
 
-### Login
-![Login](screenshots/login.png)
+*(Add your screenshots here by replacing the placeholder URLs)*
 
-### Dashboard
-![Dashboard](screenshots/dashboard.png)
----
+| Contractor Directory | Transformation Gallery |
+| :---: | :---: |
+| <img src="https://via.placeholder.com/400x250?text=Contractor+Search" alt="Contractors" /> | <img src="https://via.placeholder.com/400x250?text=Gallery+View" alt="Gallery" /> |
 
-## 🚀 Future Enhancements
-
-* ⭐ User Reviews & Ratings
-* 💳 Payment Integration
-* 📍 Location-based services
-* 🔔 Real-time notifications
-* 📱 Fully responsive mobile UI
+| Project Dashboard | Profile & Uploads |
+| :---: | :---: |
+| <img src="https://via.placeholder.com/400x250?text=Project+Dashboard" alt="Dashboard" /> | <img src="https://via.placeholder.com/400x250?text=Image+Upload" alt="Uploads" /> |
 
 ---
 
-## 🤝 Contributing
+## 📂 Folder Structure
 
-Contributions are welcome!
+The project utilizes a clear separation of concerns via a monorepo structure.
 
-1. Fork the repository
-2. Create a new branch (`feature/new-feature`)
-3. Commit your changes
-4. Push to your branch
-5. Open a Pull Request
+```text
+e:\Home Renovate\
+├── backend/                  # Express.js API Server
+│   ├── config/               # Database connection logic
+│   ├── controllers/          # Request handlers
+│   ├── middleware/           # Auth, Error, & Upload middleware
+│   ├── models/               # Mongoose DB Schemas
+│   ├── routes/               # API endpoint definitions
+│   ├── services/             # Business logic & Email handlers
+│   ├── utils/                # Helper functions (catchAsync, AppError)
+│   └── server.js             # Main server entry point
+│
+└── frontend/                 # Vite + React Application
+    ├── public/               # Static assets
+    ├── src/
+    │   ├── api/              # Axios configuration & interceptors
+    │   ├── components/       # Reusable UI components (Cards, Navbar, Uploads)
+    │   ├── contexts/         # React Context (Auth, Theme)
+    │   ├── pages/            # Core views (Landing, Dashboard, Profile, etc.)
+    │   ├── App.jsx           # Lazy-loaded Router & Suspense boundary
+    │   └── index.css         # Global design tokens and animations
+    └── vercel.json           # Production SPA routing configuration
+```
 
 ---
 
-## 👩‍💻 Author
+## 🛠️ Installation & Local Development
 
-**Stuti Tripathi**
-🔗 https://github.com/Stuti985
+### Prerequisites
+- Node.js (v18+)
+- MongoDB (Local instance or Atlas URI)
+- Cloudinary Account (Optional, for image uploads)
+
+### 1. Clone & Install Dependencies
+```bash
+# Install backend dependencies
+cd backend
+npm install
+
+# Install frontend dependencies
+cd ../frontend
+npm install
+```
+
+### 2. Environment Variables
+Create a `.env` file in the `backend` directory:
+```env
+NODE_ENV=development
+PORT=5000
+MONGO_URI=mongodb://127.0.0.1:27017/renovatepro
+JWT_SECRET=your_super_secret_jwt_key_here
+JWT_EXPIRES_IN=7d
+FRONTEND_URL=http://localhost:5173
+
+# Email Configuration (Nodemailer)
+EMAIL_HOST=smtp.mailtrap.io
+EMAIL_PORT=2525
+EMAIL_USER=your_user
+EMAIL_PASS=your_pass
+
+# Cloudinary
+CLOUDINARY_CLOUD_NAME=demo
+CLOUDINARY_API_KEY=12345
+CLOUDINARY_API_SECRET=secret
+```
+
+### 3. Run the Application
+You need two terminal windows to run both servers simultaneously.
+
+**Terminal 1 (Backend):**
+```bash
+cd backend
+npm run dev
+```
+
+**Terminal 2 (Frontend):**
+```bash
+cd frontend
+npm run dev
+```
+The application will be running at `http://localhost:5173`.
+
+*(Optional: Run `node seedServices.js` in the backend to populate your database with dummy contractors!)*
 
 ---
 
-<p align="center">
-  Built with ❤️ using the MERN Stack
-</p>
+## 📡 API Documentation
+
+Base URL: `http://localhost:5000/api`
+
+### Authentication (`/auth`)
+- `POST /register` - Register a new user
+- `POST /login` - Login and receive JWT
+- `POST /forgot-password` - Generate reset token
+- `PATCH /reset-password/:token` - Reset password
+
+### Projects (`/projects`)
+- `GET /` - Get all projects for logged-in user
+- `POST /` - Create a new project
+- `GET /:id` - Get specific project details (including populated virtuals)
+
+### Contractors (`/contractors`)
+- `GET /` - Search contractors (Supports `?search=`, `?service=`, `?minRating=`) *(Cached via RAM)*
+- `GET /services` - Get all service categories *(Cached via RAM)*
+- `GET /:id` - Get contractor profile
+
+### Media (`/upload`)
+- `POST /` - Upload a multipart/form-data image to Cloudinary
+
+---
+
+## 🚀 Deployment Guide
+
+This project is fully optimized for cloud deployment.
+
+### Backend (Render / Railway)
+1. Push your repository to GitHub.
+2. Connect your repository to Render/Railway, selecting the `backend` folder as the Root Directory.
+3. Set the Build Command to `npm install` and Start Command to `node server.js`.
+4. Inject all your `.env` variables into the host's environment settings.
+5. Set `FRONTEND_URL` to your future Vercel domain to secure CORS.
+
+### Database (MongoDB Atlas)
+1. Create a free M0 Sandbox cluster.
+2. Under Network Access, whitelist `0.0.0.0/0` (Allow access from anywhere).
+3. Copy the Connection String and set it as your `MONGO_URI` in Render.
+
+### Frontend (Vercel)
+1. Connect the `frontend` folder to Vercel.
+2. Vercel will automatically detect the Vite framework and apply the `vercel.json` SPA routing.
+3. Add `VITE_API_URL` to your environment variables, pointing it to your deployed Render/Railway backend URL.
+4. Deploy!
+
+---
+
+*Designed & Developed as a Premium SaaS Showcase.*

@@ -1,54 +1,134 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from './contexts/AuthContext';
-import Login from './pages/login';
-import Signup from './pages/Signup';
-import Dashboard from './pages/Dashboard';
-import ProjectPage from './pages/ProjectPage';
-import Navbar from './components/Navbar';
+import { Toaster } from 'react-hot-toast';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { ThemeProvider } from './contexts/ThemeContext';
+import { HelmetProvider } from 'react-helmet-async';
+
+// Static imports for core layout components
+import Sidebar from './components/Sidebar';
+import PublicNavbar from './components/PublicNavbar';
+import Footer from './components/Footer';
+import './App.css';
+
+// Lazy loaded page components (Code Splitting)
+const Login = lazy(() => import('./pages/login'));
+const Signup = lazy(() => import('./pages/Signup'));
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('./pages/ResetPassword'));
+const VerifyEmail = lazy(() => import('./pages/VerifyEmail'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const ProjectPage = lazy(() => import('./pages/ProjectPage'));
+const ProfilePage = lazy(() => import('./pages/ProfilePage'));
+const Contractors = lazy(() => import('./pages/Contractors'));
+const ContractorProfile = lazy(() => import('./pages/ContractorProfile'));
+const Gallery = lazy(() => import('./pages/Gallery'));
+const LandingPage = lazy(() => import('./pages/LandingPage'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+
+// Premium Loading Skeleton for Suspense Fallback
+const PageLoader = () => (
+  <div className="app-loader" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', background: 'var(--bg-primary)' }}>
+    <div className="spinner" style={{ width: '40px', height: '40px', border: '3px solid var(--border-color)', borderTopColor: 'var(--accent-primary)', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+    <p style={{ marginTop: '1rem', color: 'var(--text-secondary)', fontWeight: 500 }}>Loading Renovation Data...</p>
+    <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
+  </div>
+);
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth();
-  if (loading) return <div className="container">Loading...</div>;
+  if (loading) return <PageLoader />;
   return user ? children : <Navigate to="/login" />;
 }
 
 export default function App() {
   const location = useLocation();
-  const hideNavbarRoutes = ['/login', '/signup'];
-  const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
+  const isAuthPage = ['/login', '/signup'].includes(location.pathname);
+  const isLandingPage = location.pathname === '/';
+  const isDashboardLayout = !isAuthPage && !isLandingPage;
 
   return (
-    <>
-      {/* Only show navbar if not on login/signup */}
-      {!shouldHideNavbar && <Navbar />}
-      
-      <div
-        className={shouldHideNavbar ? '' : 'container'}
-        style={shouldHideNavbar ? {} : { paddingTop: 20 }}
-      >
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route
-            path="/"
-            element={
-              <PrivateRoute>
-                <Dashboard />
-              </PrivateRoute>
-            }
+    <HelmetProvider>
+      <ThemeProvider>
+        <div className="app-layout">
+          <Toaster 
+            position="top-right"
+            toastOptions={{
+              style: {
+                background: 'var(--bg-tertiary)',
+                color: 'var(--text-primary)',
+                border: '1px solid var(--glass-border)',
+              },
+            }}
           />
-          <Route
-            path="/projects/:id"
-            element={
-              <PrivateRoute>
-                <ProjectPage />
-              </PrivateRoute>
-            }
-          />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </div>
-    </>
+          
+          {isDashboardLayout && <Sidebar />}
+          {isLandingPage && <PublicNavbar />}
+          
+          <main className={`main-content ${!isDashboardLayout ? 'full-width' : ''}`}>
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password/:token" element={<ResetPassword />} />
+                <Route path="/verify-email/:token" element={<VerifyEmail />} />
+                <Route
+                  path="/dashboard"
+                  element={
+                    <PrivateRoute>
+                      <Dashboard />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/projects/:id"
+                  element={
+                    <PrivateRoute>
+                      <ProjectPage />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/gallery"
+                  element={
+                    <PrivateRoute>
+                      <Gallery />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <PrivateRoute>
+                      <ProfilePage />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/contractors"
+                  element={
+                    <PrivateRoute>
+                      <Contractors />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/contractors/:id"
+                  element={
+                    <PrivateRoute>
+                      <ContractorProfile />
+                    </PrivateRoute>
+                  }
+                />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+            {isLandingPage && <Footer />}
+          </main>
+        </div>
+      </ThemeProvider>
+    </HelmetProvider>
   );
 }

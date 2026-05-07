@@ -1,46 +1,47 @@
 const express = require('express');
+const { body } = require('express-validator');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const authController = require('../controllers/authController');
+const { validate } = require('../middleware/validation');
+const auth = require('../middleware/auth');
 
-// signup
-router.post('/signup', async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
-    if (!name || !email || !password) return res.status(400).json({ msg: 'Please provide all fields' });
+router.post(
+  '/register',
+  validate([
+    body('name', 'Name is required').not().isEmpty(),
+    body('email', 'Please include a valid email').isEmail(),
+    body('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 })
+  ]),
+  authController.register
+);
 
-    let user = await User.findOne({ email });
-    if (user) return res.status(400).json({ msg: 'User already exists' });
+router.post(
+  '/login',
+  validate([
+    body('email', 'Please include a valid email').isEmail(),
+    body('password', 'Password is required').exists()
+  ]),
+  authController.login
+);
 
-    const hashed = await bcrypt.hash(password, 10);
-    user = new User({ name, email, password: hashed });
-    await user.save();
+router.post(
+  '/forgot-password',
+  validate([
+    body('email', 'Please include a valid email').isEmail()
+  ]),
+  authController.forgotPassword
+);
 
-    const payload = { user: { id: user._id } };
-    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' });
+router.patch(
+  '/reset-password/:token',
+  validate([
+    body('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 })
+  ]),
+  authController.resetPassword
+);
 
-    res.json({ token, user: { id: user._id, name: user.name, email: user.email } });
-  } catch (err) { res.status(500).json({ msg: 'Server error' }); }
-});
+router.get('/verify-email/:token', authController.verifyEmail);
 
-// login
-router.post('/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    if (!email || !password) return res.status(400).json({ msg: 'Please provide all fields' });
-
-    const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ msg: 'Invalid credentials' });
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ msg: 'Invalid credentials' });
-
-    const payload = { user: { id: user._id } };
-    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' });
-
-    res.json({ token, user: { id: user._id, name: user.name, email: user.email } });
-  } catch (err) { res.status(500).json({ msg: 'Server error' }); }
-});
+router.get('/', auth, authController.getMe);
 
 module.exports = router;
