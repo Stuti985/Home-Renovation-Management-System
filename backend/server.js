@@ -74,7 +74,7 @@ app.get("/", (req, res) => {
 });
 
 // Handle undefined routes
-app.all('*', (req, res, next) => {
+app.all(/(.*)/, (req, res, next) => {
   const AppError = require('./utils/AppError');
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
