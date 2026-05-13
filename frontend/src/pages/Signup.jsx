@@ -20,7 +20,11 @@ export default function Signup() {
       toast.success('Registration successful! Please check your email to verify your account.');
       navigate('/login');
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Registration failed');
+      const msg = err.response?.data?.message 
+                  || err.response?.data?.errors?.[0]?.msg 
+                  || (err.message === 'Network Error' ? 'Cannot connect to server' : err.message) 
+                  || 'Registration failed';
+      toast.error(msg);
     }
   };
 

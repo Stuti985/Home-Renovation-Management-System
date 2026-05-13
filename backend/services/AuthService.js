@@ -21,6 +21,11 @@ class AuthService {
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
     
+    // Bypass email verification in development
+    if (process.env.NODE_ENV === 'development') {
+      user.isEmailVerified = true;
+    }
+    
     await user.save();
     
     // Fire and forget email
@@ -30,12 +35,14 @@ class AuthService {
   }
 
   async loginUser(email, password) {
-    const user = await User.findOne({ email });
+    const formattedEmail = email.toLowerCase().trim();
+    const user = await User.findOne({ email: formattedEmail });
     if (!user) {
       throw new AppError('Invalid credentials', 400);
     }
     
-    if (!user.isEmailVerified) {
+    // Bypass email verification check in development mode
+    if (!user.isEmailVerified && process.env.NODE_ENV !== 'development') {
       throw new AppError('Please verify your email before logging in', 403);
     }
 

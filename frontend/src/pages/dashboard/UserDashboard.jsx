@@ -7,6 +7,7 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
 import Modal from "../../components/ui/Modal";
+import EmptyState from "../../components/ui/EmptyState";
 
 export default function UserDashboard() {
   const [projects, setProjects] = useState([]);
@@ -144,18 +145,28 @@ export default function UserDashboard() {
               </div>
             ) : (
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={budgetData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                <AreaChart data={budgetData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                  <defs>
+                    <linearGradient id="colorBudget" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="var(--accent-primary)" stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor="var(--accent-primary)" stopOpacity={0}/>
+                    </linearGradient>
+                    <linearGradient id="colorActual" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="var(--warning)" stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor="var(--warning)" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--glass-border)" vertical={false} />
                   <XAxis dataKey="name" stroke="var(--text-muted)" axisLine={false} tickLine={false} />
-                  <YAxis stroke="var(--text-muted)" axisLine={false} tickLine={false} tickFormatter={(val) => `₹${val}`} />
+                  <YAxis stroke="var(--text-muted)" axisLine={false} tickLine={false} tickFormatter={(val) => `$${val}`} />
                   <Tooltip 
                     contentStyle={{ backgroundColor: 'var(--bg-tertiary)', border: '1px solid var(--glass-border)', borderRadius: '8px' }}
                     itemStyle={{ color: 'var(--text-primary)' }}
                   />
                   <Legend />
-                  <Bar dataKey="budget" name="Estimated Budget" fill="var(--accent-primary)" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="actual" name="Actual Spend" fill="var(--warning)" radius={[4, 4, 0, 0]} />
-                </BarChart>
+                  <Area type="monotone" dataKey="budget" name="Estimated Budget" stroke="var(--accent-primary)" fillOpacity={1} fill="url(#colorBudget)" />
+                  <Area type="monotone" dataKey="actual" name="Actual Spend" stroke="var(--warning)" fillOpacity={1} fill="url(#colorActual)" />
+                </AreaChart>
               </ResponsiveContainer>
             )}
           </div>
@@ -195,9 +206,12 @@ export default function UserDashboard() {
 
         <div className="projects-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
           {projects.length === 0 ? (
-            <div style={{ gridColumn: '1 / -1', padding: '3rem', textAlign: 'center', background: 'var(--glass-bg)', borderRadius: 'var(--border-radius-md)', border: '1px dashed var(--glass-border)' }}>
-              <FolderOpen size={48} style={{ color: 'var(--text-muted)', marginBottom: '1rem' }} />
-              <p style={{ color: 'var(--text-secondary)' }}>No projects found. Create your first project to get started!</p>
+            <div style={{ gridColumn: '1 / -1' }}>
+              <EmptyState 
+                icon={FolderOpen}
+                title="No projects found"
+                description="Create your first project to get started tracking your renovation!"
+              />
             </div>
           ) : (
             projects.slice(0, 3).map((p) => {

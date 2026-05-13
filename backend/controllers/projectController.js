@@ -21,3 +21,18 @@ exports.deleteProject = catchAsync(async (req, res) => {
   const result = await projectService.deleteProject(req.user.id, req.params.id);
   res.status(200).json(result);
 });
+
+exports.addTask = catchAsync(async (req, res) => {
+  const task = await projectService.addTask(req.user.id, req.params.id, req.body.title);
+  res.status(201).json(task);
+});
+
+exports.updateTask = catchAsync(async (req, res) => {
+  const task = await projectService.updateTask(req.user.id, req.params.projectId, req.params.taskId, req.body.completed);
+  res.status(200).json(task);
+});
+
+exports.addExpense = catchAsync(async (req, res) => {
+  const expense = await projectService.addExpense(req.user.id, req.params.id, req.body.description, req.body.amount);
+  res.status(201).json(expense);
+});

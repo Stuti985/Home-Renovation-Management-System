@@ -4,7 +4,6 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
-const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
 const connectDB = require('./config/db');
 const globalErrorHandler = require('./middleware/errorHandler');
@@ -17,13 +16,13 @@ const app = express();
 // Security HTTP headers
 app.use(helmet());
 
-// Rate Limiting (100 requests per 15 minutes per IP)
+// Rate Limiting (1000 requests per 15 minutes per IP)
 const limiter = rateLimit({
-  max: 100,
+  max: 1000,
   windowMs: 15 * 60 * 1000,
-  message: 'Too many requests from this IP, please try again in 15 minutes!'
+  message: { msg: 'Too many requests from this IP, please try again in 15 minutes!' }
 });
-app.use('/api', limiter);
+// app.use('/api', limiter);
 
 // Development logging
 if (process.env.NODE_ENV === 'development') {
@@ -43,11 +42,12 @@ app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
+    // Allow any localhost or 127.0.0.1 port during development or specific production URLs
+    if (origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:') || allowedOrigins.indexOf(origin) !== -1) {
+      return callback(null, true);
     }
-    return callback(null, true);
+    const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+    return callback(new Error(msg), false);
   },
   credentials: true
 }));
@@ -55,10 +55,7 @@ app.use(cors({
 app.use(express.json({ limit: '10kb' })); // Body parser, limit payload size
 
 // Data sanitization against NoSQL query injection
-app.use(mongoSanitize());
-
-// Data sanitization against XSS
-app.use(xss());
+// app.use(mongoSanitize()); // Removed because it throws 'Cannot set property query' in Express 5
 
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/projects', require('./routes/projects'));

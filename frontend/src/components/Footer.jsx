@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Twitter, Github, Linkedin, Mail } from 'lucide-react';
+import { Home, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function Footer() {
@@ -28,9 +28,7 @@ export default function Footer() {
             The ultimate platform to track expenses, manage contractors, and bring your dream home renovation to life.
           </p>
           <div style={{ display: 'flex', gap: '1rem', color: 'var(--text-muted)' }}>
-            <a href="#" style={{ color: 'inherit' }}><Twitter size={20} /></a>
-            <a href="#" style={{ color: 'inherit' }}><Github size={20} /></a>
-            <a href="#" style={{ color: 'inherit' }}><Linkedin size={20} /></a>
+            {/* Social links removed for compatibility */}
           </div>
         </div>
 
@@ -38,26 +36,26 @@ export default function Footer() {
         <div>
           <h4 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: 'var(--text-primary)' }}>Product</h4>
           <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            <li><a href="#features" style={{ color: 'var(--text-secondary)' }}>Features</a></li>
-            <li><a href="#pricing" style={{ color: 'var(--text-secondary)' }}>Pricing</a></li>
-            <li><a href="#showcase" style={{ color: 'var(--text-secondary)' }}>Showcase</a></li>
+            <li><Link to="/coming-soon" state={{ pageName: 'Features' }} style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>Features</Link></li>
+            <li><Link to="/coming-soon" state={{ pageName: 'Pricing' }} style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>Pricing</Link></li>
+            <li><Link to="/coming-soon" state={{ pageName: 'Showcase' }} style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>Showcase</Link></li>
           </ul>
         </div>
 
         <div>
           <h4 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: 'var(--text-primary)' }}>Company</h4>
           <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            <li><a href="#" style={{ color: 'var(--text-secondary)' }}>About Us</a></li>
-            <li><a href="#" style={{ color: 'var(--text-secondary)' }}>Careers</a></li>
-            <li><a href="#" style={{ color: 'var(--text-secondary)' }}>Contact</a></li>
+            <li><Link to="/coming-soon" state={{ pageName: 'About Us' }} style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>About Us</Link></li>
+            <li><Link to="/coming-soon" state={{ pageName: 'Careers' }} style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>Careers</Link></li>
+            <li><Link to="/coming-soon" state={{ pageName: 'Contact' }} style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>Contact</Link></li>
           </ul>
         </div>
 
         <div>
           <h4 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: 'var(--text-primary)' }}>Legal</h4>
           <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            <li><a href="#" style={{ color: 'var(--text-secondary)' }}>Privacy Policy</a></li>
-            <li><a href="#" style={{ color: 'var(--text-secondary)' }}>Terms of Service</a></li>
+            <li><Link to="/coming-soon" state={{ pageName: 'Privacy Policy' }} style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>Privacy Policy</Link></li>
+            <li><Link to="/coming-soon" state={{ pageName: 'Terms of Service' }} style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>Terms of Service</Link></li>
           </ul>
         </div>
       </div>

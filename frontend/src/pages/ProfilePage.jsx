@@ -3,9 +3,11 @@ import { useAuth } from '../contexts/AuthContext';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import { User, Mail, Lock } from 'lucide-react';
+import API from '../api/axios';
+import toast from 'react-hot-toast';
 
 export default function ProfilePage() {
-  const { user } = useAuth();
+  const { user, login } = useAuth();
   
   const [formData, setFormData] = useState({
     name: user?.name || '',
@@ -14,14 +16,48 @@ export default function ProfilePage() {
     newPassword: ''
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Simulate update since backend auth logic would need to be updated to support password changes
-    alert('Profile updated! (Simulation)');
+    setLoading(true);
+    
+    try {
+      // Update Name / Email
+      if (formData.name !== user.name || formData.email !== user.email) {
+        const res = await API.put('/users/me', {
+          name: formData.name,
+          email: formData.email
+        });
+        toast.success('Profile information updated');
+        // Note: Ideally, the context should re-fetch user or we just update token if email changed.
+        // For now, reload window or update state is fine.
+      }
+
+      // Update Password
+      if (formData.newPassword) {
+        if (!formData.currentPassword) {
+          toast.error('Current password is required to set a new password');
+          setLoading(false);
+          return;
+        }
+        await API.put('/users/me/password', {
+          currentPassword: formData.currentPassword,
+          newPassword: formData.newPassword
+        });
+        toast.success('Password changed successfully');
+        setFormData({ ...formData, currentPassword: '', newPassword: '' });
+      }
+
+    } catch (err) {
+      toast.error(err.response?.data?.msg || 'Failed to update profile');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -80,6 +116,17 @@ export default function ProfilePage() {
             </h3>
 
             <div className="input-group">
+              <label>Current Password</label>
+              <div className="input-wrapper" style={{ position: 'relative' }}>
+                <Lock size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                <input 
+                  type="password" name="currentPassword" placeholder="Required if changing password" value={formData.currentPassword} onChange={handleChange}
+                  style={{ width: '100%', padding: '0.75rem 1rem 0.75rem 3rem', background: 'rgba(0,0,0,0.1)', border: '1px solid var(--glass-border)', borderRadius: 'var(--border-radius-sm)', color: 'var(--text-primary)' }}
+                />
+              </div>
+            </div>
+
+            <div className="input-group">
               <label>New Password</label>
               <div className="input-wrapper" style={{ position: 'relative' }}>
                 <Lock size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
@@ -91,7 +138,9 @@ export default function ProfilePage() {
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
-              <Button type="submit">Save Changes</Button>
+              <Button type="submit" disabled={loading}>
+                {loading ? 'Saving...' : 'Save Changes'}
+              </Button>
             </div>
           </form>
         </Card>

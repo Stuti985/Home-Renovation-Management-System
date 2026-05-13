@@ -12,19 +12,23 @@ import Footer from './components/Footer';
 import './App.css';
 
 // Lazy loaded page components (Code Splitting)
-const Login = lazy(() => import('./pages/login'));
+const Login = lazy(() => import('./pages/Login'));
 const Signup = lazy(() => import('./pages/Signup'));
 const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
 const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 const VerifyEmail = lazy(() => import('./pages/VerifyEmail'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const ProjectPage = lazy(() => import('./pages/ProjectPage'));
+const Projects = lazy(() => import('./pages/Projects'));
+const Bookings = lazy(() => import('./pages/Bookings'));
+const Notifications = lazy(() => import('./pages/Notifications'));
 const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 const Contractors = lazy(() => import('./pages/Contractors'));
 const ContractorProfile = lazy(() => import('./pages/ContractorProfile'));
 const Gallery = lazy(() => import('./pages/Gallery'));
 const LandingPage = lazy(() => import('./pages/LandingPage'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+const ComingSoon = lazy(() => import('./pages/ComingSoon'));
 
 // Premium Loading Skeleton for Suspense Fallback
 const PageLoader = () => (
@@ -43,9 +47,10 @@ function PrivateRoute({ children }) {
 
 export default function App() {
   const location = useLocation();
-  const isAuthPage = ['/login', '/signup'].includes(location.pathname);
+  const isAuthPage = ['/login', '/signup', '/forgot-password', '/reset-password'].some(p => location.pathname.includes(p));
   const isLandingPage = location.pathname === '/';
-  const isDashboardLayout = !isAuthPage && !isLandingPage;
+  const isComingSoon = location.pathname === '/coming-soon';
+  const isDashboardLayout = !isAuthPage && !isLandingPage && !isComingSoon;
 
   return (
     <HelmetProvider>
@@ -83,10 +88,34 @@ export default function App() {
                   }
                 />
                 <Route
+                  path="/projects"
+                  element={
+                    <PrivateRoute>
+                      <Projects />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
                   path="/projects/:id"
                   element={
                     <PrivateRoute>
                       <ProjectPage />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/bookings"
+                  element={
+                    <PrivateRoute>
+                      <Bookings />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/notifications"
+                  element={
+                    <PrivateRoute>
+                      <Notifications />
                     </PrivateRoute>
                   }
                 />
@@ -122,6 +151,7 @@ export default function App() {
                     </PrivateRoute>
                   }
                 />
+                <Route path="/coming-soon" element={<ComingSoon />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>

@@ -23,11 +23,10 @@ export function AuthProvider({ children }){
     setUser(res.data.user);
   };
 
-  const signup = async (name, email, password) => {
-    console.log("🔥 Signup API called");
-    const res = await API.post('/auth/signup', { name, email, password });
-    localStorage.setItem('token', res.data.token);
-    setUser(res.data.user);
+  const register = async (name, email, password) => {
+    console.log("🔥 Register API called");
+    await API.post('/auth/register', { name, email, password });
+    // Do NOT set token/user here, email verification is required first!
   };
 
   const logout = () => {
@@ -36,7 +35,7 @@ export function AuthProvider({ children }){
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, signup, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

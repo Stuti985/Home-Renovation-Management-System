@@ -21,7 +21,11 @@ export default function Login() {
       const origin = location.state?.from?.pathname || '/dashboard';
       navigate(origin);
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Login failed');
+      const msg = err.response?.data?.message 
+                  || err.response?.data?.errors?.[0]?.msg 
+                  || (err.message === 'Network Error' ? 'Cannot connect to server' : err.message) 
+                  || 'Login failed';
+      toast.error(msg);
     }
   };
 

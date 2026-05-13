@@ -17,6 +17,16 @@ class NotificationService {
     notification.read = true;
     return await notification.save();
   }
+
+  async createNotification(userId, title, message, type = 'info') {
+    const notification = new Notification({
+      user: userId,
+      title,
+      message,
+      type
+    });
+    return await notification.save();
+  }
 }
 
 module.exports = new NotificationService();

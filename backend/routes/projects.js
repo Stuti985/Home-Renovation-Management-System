@@ -20,4 +20,8 @@ router.post(
 router.get('/:id', projectController.getProjectById);
 router.delete('/:id', projectController.deleteProject);
 
+router.post('/:id/tasks', projectController.addTask);
+router.put('/:projectId/tasks/:taskId', projectController.updateTask);
+router.post('/:id/expenses', projectController.addExpense);
+
 module.exports = router;
